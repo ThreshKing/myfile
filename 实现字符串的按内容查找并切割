@@ -1,0 +1,108 @@
+#include <iostream>
+#include <sstream>
+#include <string.h>
+#include <math.h>
+#include <bitset>
+#include <vector>
+#include<iomanip>
+#include<fstream>
+#include<cstdlib>
+
+
+
+using namespace std;
+
+
+
+void SplitString(const string& s, vector<string>& v, const string& c)
+{
+    string::size_type pos1, pos2;
+    pos2 = s.find(c);
+    pos1 = 0;
+    while(string::npos != pos2)
+    {
+        v.push_back(s.substr(pos1, pos2-pos1));
+
+        pos1 = pos2 + c.size();
+        pos2 = s.find(c, pos1);
+    }
+    if(pos1 != s.length())
+        v.push_back(s.substr(pos1));
+}
+
+double str2double(string &res)
+{
+    double a;
+    string b = res;
+    stringstream ss;
+    ss << res;
+    ss >> a;
+    
+    return a;
+}
+int main(){
+    string raw_data = "%RAWIMUSA,2127,374242.850;2127,374242.838082,fa00fe00,327741572,3762019,3468933,529692,554006,-369854*f2562f0d\
+%RAWIMUSA,2127,374242.860;2127,374242.846084,fa01fe00,327815400,3670309,3680389,548035,527299,-266659*fb3c6a30\
+%RAWIMUSA,2127,374242.870;2127,374242.862084,fa01fe00,327788835,3391312,3706848,510690,525043,-290366*5954b10a\
+%RAWIMUSA,2127,374242.880;2127,374242.870082,fa00fe00,327760890,3439569,3762465,450972,497237,-324336*cd45fbc0\
+%RAWIMUSA,2127,374242.890;2127,374242.878084,fa00fe00,327709383,3479001,3844200,445761,590677,-254095*0a74d6ae\
+%RAWIMUSA,2127,374242.900;2127,374242.886084,fa00fe00,327664760,3442932,3756398,420758,588459,-284461*66cf3338\
+%RAWIMUSA,2127,374242.910;2127,374242.902084,fa00fe00,327596502,3421829,3708342,573611,478560,-272493*3ce0ad9c\
+%RAWIMUSA,2127,374242.920;2127,374242.910081,fa00fe00,327696228,3432210,3708619,556072,527939,-156154*ceb97eb3\
+%RAWIMUSA,2127,374242.930;2127,374242.918084,fa00fe00,327756967,3218274,3759175,635262,600971,-276916*ff4f222b\
+%RAWIMUSA,2127,374242.940;2127,374242.926084,fa00fe00,327798028,3339769,3610208,558335,615508,-317840*9917eaf1";
+    
+    cout<<"raw_data: "<<raw_data<<endl<<endl;
+    vector<string> vraw;
+    string s;
+    SplitString(raw_data, vraw,"%RAW");
+    for(vector<string>::size_type i = 1; i != vraw.size(); ++i)
+    {
+        
+        s = vraw[i];
+        cout<<"第"<<i<<"组数据进行解析: "<<endl;
+        vector<string> v1;
+        vector<string> v2;
+        vector<string> v3;
+        string s1;
+        string s2;
+        SplitString(s, v1,";"); 
+        s1 = v1[1];
+        SplitString(s1, v2,"*");
+        s2 = v2[0];
+        SplitString(s2, v3,","); 
+        
+        string IMUstatus = v3[2];
+        string accZ = v3[3];
+        string accY = v3[4];
+        string accX = v3[5];
+        string roll = v3[6];
+        string pitch = v3[7];
+        string yaw = v3[8];
+
+        cout << "IMUstatus: " << IMUstatus <<endl;
+        cout << "accZ: " << accZ << "\t" << str2double(accZ) << endl;
+        cout << "accY: " << accY << "\t" << str2double(accY) << endl;
+        cout << "accX: " << accX << "\t" << str2double(accX) << endl;
+        cout << "roll: " << roll << "\t" << str2double(roll) << endl;
+        cout << "pitch: " << pitch << "\t" << str2double(pitch) << endl;
+        cout << "yaw: " << yaw << "\t" << str2double(yaw) << endl;
+        cout<<endl<<endl;
+        s = "";
+        s1= "";
+        s2= "";
+
+        v1.clear();
+        v2.clear();
+        v3.clear();
+        
+
+    }
+    
+    
+    cout << endl;
+    
+}
+
+
+
